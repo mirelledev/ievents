@@ -37,7 +37,7 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
   const [description, setDescription] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [date, setDate] = useState<Date>();
-
+  const apiURL = process.env.API_BASE_URL;
   const [error, setError] = useState<string>("");
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [CEP, setCEP] = useState<string>("");
@@ -157,7 +157,7 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/events/create-event",
+        `${apiURL}/api/events/create-event`,
         event,
         {
           headers: {

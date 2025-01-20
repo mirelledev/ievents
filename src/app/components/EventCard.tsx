@@ -17,13 +17,14 @@ export default function EventCard({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const apiURL = process.env.API_BASE_URL;
 
   const zapSvg = "https://www.svgrepo.com/show/452133/whatsapp.svg";
 
   const removeEvent = useEventStore((state) => state.removeEvent);
 
   const handleDelete = async (eventId: string) => {
-    const url = "http://localhost:3000/api/events/delevent";
+    const url = `${apiURL}/api/events/delevent`;
 
     try {
       const response = await axios.delete(url, {

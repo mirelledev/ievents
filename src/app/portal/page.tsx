@@ -12,6 +12,7 @@ import another from "../../assets/another.png";
 export default function Portal() {
   const { events, setEvents } = useEventStore((state) => state);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const apiURL = process.env.API_BASE_URL;
   const openModal = () => {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
@@ -54,14 +55,11 @@ export default function Portal() {
   const fetchEvents = async () => {
     if (!token) return;
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/events/getevents",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${apiURL}/api/events/getevents`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setEvents(response.data.events);
     } catch (err) {
       console.log("Erro ao pegar eventos:", err);
@@ -77,7 +75,7 @@ export default function Portal() {
   useEffect(() => {
     if (!token) return;
     axios
-      .get("http://localhost:3000/api/users/profile", {
+      .get(`${apiURL}/api/users/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -86,6 +84,7 @@ export default function Portal() {
         setUser_first_name(response.data.user.firstName);
       })
       .catch((error) => console.log("Erro:", error));
+    // eslint-disable-next-line
   }, [token]);
 
   if (status === "loading") {

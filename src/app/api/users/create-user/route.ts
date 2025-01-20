@@ -5,8 +5,19 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-
+const apiURL = process.env.API_BASE_URL;
 export async function POST(req: Request) {
+  const response = NextResponse.next();
+  response.headers.set("Access-Control-Allow-Origin", `${apiURL}`);
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+
   try {
     const body = await req.json();
     const { firstName, lastName, email, password } = body;

@@ -17,6 +17,7 @@ export default function RegisterPage() {
   const [lastName, setLastName] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const apiURL = process.env.API_BASE_URL;
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -36,14 +37,11 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/users/create-user",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ firstName, lastName, email, password }),
-        }
-      );
+      const response = await fetch(`${apiURL}/api/users/create-user`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email, password }),
+      });
 
       const data = await response.json();
 

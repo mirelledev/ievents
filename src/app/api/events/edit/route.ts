@@ -5,8 +5,20 @@ import { getServerSession } from "next-auth";
 import { validateToken } from "@/app/utils/auth";
 
 const prisma = new PrismaClient();
+const apiURL = process.env.API_BASE_URL;
 
 export async function PUT(req: Request) {
+  const response = NextResponse.next();
+  response.headers.set("Access-Control-Allow-Origin", `${apiURL}`);
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+
   const session = await getServerSession(authOptions);
 
   const token = req.headers.get("Authorization")?.split(" ")[1];

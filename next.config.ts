@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
             key: "Access-Control-Allow-Origin",
             value:
               "https://ievents-git-main-mirelle-geovannas-projects.vercel.app",
-          }, // Substitua pelo seu domínio
+          },
           {
             key: "Access-Control-Allow-Methods",
             value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
