@@ -68,12 +68,14 @@ export default function Portal() {
 
   useEffect(() => {
     fetchEvents();
-
+    console.log(process.env.API_BASE_URL + " apiurl");
+    console.log(process.env + " teste ");
     // eslint-disable-next-line
   }, [token]);
 
   useEffect(() => {
     if (!token) return;
+    console.log(apiURL + "a");
     axios
       .get(`${apiURL}/api/users/profile`, {
         headers: {
