@@ -1,21 +1,78 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 10%;
+    --foreground: 100 100% 100%;
+    --card: 0 0% 10%;
+    --card-foreground: 224 71.4% 4.1%;
+    --popover: 0 0% 15%; /* Fundo do Popover mais escuro */
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 220.9 0% 100%;
+    --muted: 0 0% 100%; /* Cinza escuro para elementos secundários */
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 10 0% 100%;
+    --accent-foreground: 220.9 39.3% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 210 10% 20%;
+    --input: 210 10% 25%;
+    --ring: 210 10% 35%;
+    --radius: 0.5rem;
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply font-nunito bg-background text-foreground;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  /* Ajustes específicos para o Date Picker */
+  .date-picker {
+    @apply text-foreground bg-background rounded-md cursor-pointer;
+    transition: background-color 0.2s, color 0.2s ease-in-out;
+  }
+
+  .date-picker input {
+    @apply bg-input text-foreground rounded-md p-2 border focus:outline-none focus:ring;
+    border-color: hsl(var(--border));
+    --tw-ring-color: hsl(var(--ring));
+  }
+
+  .date-picker-dropdown {
+    @apply bg-popover text-popover-foreground rounded-lg shadow-lg p-3;
+  }
+
+  .date-picker-day:hover {
+    @apply bg-secondary text-secondary-foreground;
+  }
+
+  .date-picker-day {
+    @apply text-foreground rounded-md cursor-pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .date-picker-day.selected {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .date-picker-day.disabled {
+    @apply text-muted cursor-not-allowed opacity-50;
+  }
+
+  .date-picker-header {
+    @apply text-foreground font-semibold flex justify-between items-center mb-2;
+  }
+
+  .date-picker-arrow {
+    @apply text-foreground cursor-pointer hover:text-primary-foreground;
+  }
 }
