@@ -45,8 +45,8 @@ export default function LoginPage() {
     <div className="flex p-3 bg-black rounded-lg border-2  w-[500px] mt-10 flex-col items-center text-center">
       <h1 className="text-2xl font-bold mt-2">entrar na conta</h1>
       <p className="text-neutral-400 px-3 mb-4">
-        após a realizaçao do login, voce sera possivel utilizar as
-        funcionalidades do site
+        após a realizaçao do login, será possível utilizar as funcionalidades do
+        site
       </p>
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <input

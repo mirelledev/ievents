@@ -309,7 +309,7 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[280px] justify-start text-left font-normal",
+                        "w-[255px] justify-start text-left font-normal",
                         !date && "text-muted-foreground"
                       )}
                     >
