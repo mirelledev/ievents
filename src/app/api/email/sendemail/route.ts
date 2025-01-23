@@ -36,6 +36,7 @@ const sendEmail = async (to: string, subject: string, text: string) => {
 export async function GET(req: Request) {
   try {
     const now = new Date();
+    console.log(now);
 
     const events = await prisma.event.findMany({
       where: {
