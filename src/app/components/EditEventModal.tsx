@@ -306,22 +306,24 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
                 </Label>
                 <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                   <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[255px] justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon />
-                      {date ? (
-                        format(date, "PPP")
-                      ) : (
-                        <span>Selecionar data</span>
-                      )}
-                    </Button>
+                    <div onTouchStart={() => setIsPopoverOpen(true)}>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[255px] justify-start text-left font-normal",
+                          !date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon />
+                        {date ? (
+                          format(date, "PPP")
+                        ) : (
+                          <span>Selecionar data</span>
+                        )}
+                      </Button>
+                    </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="w-auto p-0 z-50">
                     <Calendar
                       mode="single"
                       selected={date}
