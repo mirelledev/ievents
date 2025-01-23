@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
+export const dynamic = "force-dynamic";
+
 const sendEmail = async (to: string, subject: string, text: string) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
