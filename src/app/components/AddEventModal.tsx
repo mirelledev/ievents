@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/popover";
 import { useSession } from "next-auth/react";
 import { useEventStore } from "@/store/useEventStore";
+import { pt } from "date-fns/locale";
 
 type Props = {
   isOpen: boolean;
@@ -278,8 +279,12 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
                 </Label>
                 <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                   <PopoverTrigger asChild>
-                    <div onTouchStart={() => setIsPopoverOpen(true)}>
+                    <div
+                      onTouchStart={() => setIsPopoverOpen(true)}
+                      onClick={() => setIsPopoverOpen(true)}
+                    >
                       <Button
+                        type="button"
                         variant={"outline"}
                         className={cn(
                           "w-[255px] justify-start text-left font-normal",
@@ -301,6 +306,7 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
                       selected={date}
                       onSelect={handleDateSelect}
                       initialFocus={false}
+                      locale={pt}
                     />
                   </PopoverContent>
                 </Popover>

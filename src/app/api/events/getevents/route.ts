@@ -57,20 +57,26 @@ export async function GET(req: Request) {
     });
 
     const sortedEvents = events.sort((a, b) => {
-      const now = new Date();
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
 
-      const dateA = new Date(a.date).setHours(0, 0, 0, 0);
-      const dateB = new Date(b.date).setHours(0, 0, 0, 0);
+      // Verificar se as datas são válidas
+      if (isNaN(dateA.getTime())) {
+        console.error("Data inválida em a.date:", a.date);
+      }
+      if (isNaN(dateB.getTime())) {
+        console.error("Data inválida em b.date:", b.date);
+      }
 
-      return (
-        Math.abs(Number(dateA) - Number(now)) -
-        Math.abs(Number(dateB) - Number(now))
-      );
+      // Ordenar diretamente pelas datas, levando em consideração a ordem cronológica
+      return dateA.getTime() - dateB.getTime();
     });
+
+    console.log("Eventos ordenados:", sortedEvents);
 
     return NextResponse.json({ events: sortedEvents }, { status: 200 });
   } catch (error) {
-    console.error("Erro ao processar requisição:", error); // Log do erro
+    console.error("Erro ao processar requisição:", error);
     return NextResponse.json(
       { message: "Ocorreu um erro.", error },
       { status: 500 }

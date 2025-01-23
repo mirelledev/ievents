@@ -25,6 +25,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useEventStore } from "@/store/useEventStore";
 import { useEffect } from "react";
+import { pt } from "date-fns/locale";
 
 type Props = {
   isOpen: boolean;
@@ -332,7 +333,8 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
                       mode="single"
                       selected={date}
                       onSelect={handleDateSelect}
-                      initialFocus
+                      initialFocus={false}
+                      locale={pt}
                     />
                   </PopoverContent>
                 </Popover>
