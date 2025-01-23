@@ -306,8 +306,12 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
                 </Label>
                 <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                   <PopoverTrigger asChild>
-                    <div onTouchStart={() => setIsPopoverOpen(true)}>
+                    <div
+                      onTouchStart={() => setIsPopoverOpen(true)}
+                      onClick={() => setIsPopoverOpen(true)}
+                    >
                       <Button
+                        type="button"
                         variant={"outline"}
                         className={cn(
                           "w-[255px] justify-start text-left font-normal",
