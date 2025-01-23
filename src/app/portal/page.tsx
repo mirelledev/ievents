@@ -91,6 +91,7 @@ export default function Portal() {
   if (status === "loading") {
     return <p>Carregando..</p>;
   }
+  console.log("so pra dar redeploy");
 
   return (
     <>
