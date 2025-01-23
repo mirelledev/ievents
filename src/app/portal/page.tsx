@@ -68,14 +68,13 @@ export default function Portal() {
 
   useEffect(() => {
     fetchEvents();
-    console.log(process.env.API_BASE_URL + " apiurl");
-    console.log(process.env + " teste ");
+
     // eslint-disable-next-line
   }, [token]);
 
   useEffect(() => {
     if (!token) return;
-    console.log(apiURL + "a");
+
     axios
       .get(`${apiURL}/api/users/profile`, {
         headers: {
@@ -102,7 +101,7 @@ export default function Portal() {
         <div className="flex">
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="text-red-300  w-[70px] font-bold p-2 m-2 rounded-md border border-red-400 hover:text-white ml-auto"
+            className="text-red-300  w-[70px] font-bold p-2 m-2 rounded-md border border-red-400 hover:text-white ml-auto mr-5"
           >
             sair
           </button>
@@ -115,14 +114,15 @@ export default function Portal() {
               {user_first_name}
             </h1>
             <p className="text-neutral-300 text-xl">
-              aqui, voce consegue criar editar e deletar seus eventos{" "}
+              aqui, voce consegue criar editar e deletar seus eventos
+              <br></br>{" "}
               <span className="text-white bg-purple-500 p-1 rounded-md">
                 na melhor forma!
               </span>
             </p>
           </div>
 
-          <div className="mt-6 2xl:w-[1000px] xl:w-[1000px] lg:w-[900px] md:w-[700px] sm:w-[600px] w-[400px] bg-opacity-90 bg-neutral-900  border border-neutral-700 p-3 rounded-md">
+          <div className="mt-6 2xl:w-[1000px] xl:w-[1000px] lg:w-[900px] md:w-[700px] sm:w-[600px] w-[300px] bg-opacity-90 bg-neutral-900  border border-neutral-700 p-3 rounded-md">
             <div className="flex flex-row text-center p-2 justify-center">
               <h1 className="text-xl font-bold mb-3">seus eventos</h1>
 

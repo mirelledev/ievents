@@ -249,6 +249,7 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
                   Numero:
                 </Label>
                 <Input
+                  type="number"
                   id="numero"
                   placeholder="212"
                   className="col-span-3"

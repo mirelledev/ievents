@@ -277,6 +277,7 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
                   Numero:
                 </Label>
                 <Input
+                  type="number"
                   id="numero"
                   placeholder="212"
                   className="col-span-3"
