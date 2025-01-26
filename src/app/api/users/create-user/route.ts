@@ -28,6 +28,26 @@ export async function POST(req: Request) {
       );
     }
 
+    if (firstName.includes(" ")) {
+      return NextResponse.json(
+        { message: "O primeiro nome não pode ter espaços" },
+        { status: 400 }
+      );
+    }
+    if (firstName.length > 20) {
+      return NextResponse.json(
+        { message: "O primeiro nome só pode ser até 20 caracteres" },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json(
+        { message: "A senha precisa ter pelo menos 7 caracteres" },
+        { status: 400 }
+      );
+    }
+
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });

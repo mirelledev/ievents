@@ -8,10 +8,12 @@ import EventCard from "../components/EventCard";
 import AddEventModal from "../components/AddEventModal";
 import { useEventStore } from "@/store/useEventStore";
 import another from "../../assets/another.png";
+import { Loader2 } from "lucide-react";
 
 export default function Portal() {
   const { events, setEvents } = useEventStore((state) => state);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const apiURL = process.env.API_BASE_URL;
   const openModal = () => {
     setIsModalOpen(true);
@@ -54,16 +56,20 @@ export default function Portal() {
 
   const fetchEvents = async () => {
     if (!token) return;
+    setLoading(true);
     try {
       const response = await axios.get(`${apiURL}/api/events/getevents`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      setLoading(false);
       setEvents(response.data.events);
     } catch (err) {
       console.log("Erro ao pegar eventos:", err);
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -89,9 +95,14 @@ export default function Portal() {
   }, [token]);
 
   if (status === "loading") {
-    return <p>Carregando..</p>;
+    return (
+      <div className="items-center justify-center">
+        <div className="flex flex-col">
+          <Loader2 className="animate-spin" />
+        </div>
+      </div>
+    );
   }
-  console.log("so pra dar redeploy");
 
   return (
     <>
@@ -145,7 +156,9 @@ export default function Portal() {
             </div>
 
             <div className="grid 2xl:max-h-[600px] xl:max-h-[600px] 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 text-center gap-4 p-2">
-              {currentEvents?.length > 0 ? (
+              {loading ? (
+                <Loader2 className="animate-spin" />
+              ) : currentEvents?.length > 0 ? (
                 currentEvents?.map((event, index) => (
                   <EventCard key={index} event={event} token={token} />
                 ))

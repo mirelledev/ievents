@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function RegisterPage() {
   // eslint-disable-next-line
@@ -18,6 +20,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const apiURL = process.env.API_BASE_URL;
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -26,13 +29,28 @@ export default function RegisterPage() {
   }, [status, router]);
 
   if (status === "loading") {
-    return <p>Carregando..</p>;
+    return (
+      <div className="items-center justify-center">
+        <div className="flex flex-col mt-[400px]">
+          <Loader2 className="animate-spin" />
+        </div>
+      </div>
+    );
   }
 
   const handleSubmit = async (e: FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
+    if (!email.includes("@")) {
+      setError("Digite um e-mail válido.");
+      setLoading(false);
+      return;
+    }
+
     if (confirmPassword !== password) {
+      setLoading(false);
+      setError("As senhas precisam ser iguais");
       return;
     }
 
@@ -46,6 +64,7 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (!response.ok) {
+        setLoading(false);
         setError(data.message);
         return;
       }
@@ -57,13 +76,15 @@ export default function RegisterPage() {
       });
 
       if (result?.error) {
-        setError("credenciais erradas");
+        setLoading(false);
       } else {
         router.push("/portal");
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   return (
@@ -93,7 +114,7 @@ export default function RegisterPage() {
         />
         <input
           className="bg-neutral-800 border-2 mt-2 p-3 rounded-md focus:outline-none w-[300px] mb-2"
-          type="text"
+          type="email"
           placeholder="E-mail"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setEmail(e.target.value)
@@ -121,14 +142,23 @@ export default function RegisterPage() {
           }
           value={confirmPassword}
         />
-        <button
-          className="p-3 mb-2 border-2 mt-5 bg-black text-white rounded-xl hover:scale-105 transition-transform duration-200"
-          type="submit"
-        >
-          Cadastro
-        </button>
+        {loading ? (
+          <Button disabled>
+            <Loader2 className="animate-spin" />
+            Aguarde..
+          </Button>
+        ) : (
+          <Button
+            className="p-3 mb-2 border-2 mt-5 bg-white hover:text-white text-black rounded-xl hover:scale-105 transition-transform duration-200"
+            type="submit"
+          >
+            Cadastrar
+          </Button>
+        )}
       </form>
-      {error && <p className=" text-red-500 p-2 rounded-md">{error}</p>}
+      {error && (
+        <p className=" text-red-500 p-2 rounded-md font-bold">{error}</p>
+      )}
       <p>
         Já tem uma conta?{" "}
         <span className="font-bold">

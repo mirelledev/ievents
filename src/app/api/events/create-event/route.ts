@@ -3,9 +3,15 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../lib/authOptions";
 import { validateToken } from "@/app/utils/auth";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 
 const prisma = new PrismaClient();
 const apiURL = process.env.API_BASE_URL;
+
+const rateLimiter = new RateLimiterMemory({
+  points: 20,
+  duration: 60,
+});
 
 export async function POST(req: Request) {
   const response = NextResponse.next();
@@ -18,6 +24,21 @@ export async function POST(req: Request) {
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization"
   );
+  const ip =
+    (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() ||
+    "127.0.0.1";
+
+  try {
+    await rateLimiter.consume(ip);
+    // eslint-disable-next-line
+  } catch (rateLimitError) {
+    return NextResponse.json(
+      {
+        message: "Limite de requisições excedido, tente novamente mais tarde.",
+      },
+      { status: 429 }
+    );
+  }
 
   try {
     const session = await getServerSession(authOptions);

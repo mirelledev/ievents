@@ -25,6 +25,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useEventStore } from "@/store/useEventStore";
 import { pt } from "date-fns/locale";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   isOpen: boolean;
@@ -44,6 +45,7 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
   const [CEP, setCEP] = useState<string>("");
   const [rua, setRua] = useState<string>("");
   const [numero, setNumero] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
@@ -112,34 +114,53 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
 
     if (title.length < 3) {
       setError("O título precisa ter pelo menos 3 caracteres");
+      setLoading(false);
       return;
     }
 
     if (title.length > 30) {
       setError("O título só pode ser ate 30 caracteres");
+      setLoading(false);
       return;
     }
 
     if (numero.length >= 6) {
       setError("O numero do local so pode ter ate 6 caracteres");
+      setLoading(false);
+      return;
+    }
+
+    if (time.length < 5) {
+      setError("O horario deve ser no formato 00:00");
+      setLoading(false);
       return;
     }
 
     if (description == "" || time == "" || CEP == "" || rua == "") {
+      setLoading(false);
       setError("Todos os campos devem ser preenchidos");
       return;
     }
 
     if (description.length > 60) {
+      setLoading(false);
       setError("A descricao só pode ser ate 60 caracteres");
       return;
     }
 
+    if (!date) {
+      setLoading(false);
+      setError("Selecione uma data");
+      return;
+    }
+
     if (date && isPastDate(date)) {
+      setLoading(false);
       setError("A data não pode ser anterior ao dia atual.");
       return;
     }
@@ -169,13 +190,14 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
       if (response.status === 200) {
         const event = response.data.event;
         addEvent(event);
-
+        setLoading(false);
         onClose();
       }
     } catch (error) {
       console.log(error);
       setError("Erro ao adicionar evento, tente novamente.");
     }
+    setLoading(false);
   };
 
   return (
@@ -314,7 +336,14 @@ export default function DialogDemo({ isOpen, onClose }: Props) {
             </div>
 
             <DialogFooter>
-              <Button type="submit">Salvar Evento</Button>
+              {loading ? (
+                <Button disabled>
+                  <Loader2 className="animate-spin" />
+                  Adicionando..
+                </Button>
+              ) : (
+                <Button type="submit">Salvar Evento</Button>
+              )}
               <Button onClick={onClose} variant="outline">
                 Sair
               </Button>

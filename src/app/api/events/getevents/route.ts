@@ -60,7 +60,6 @@ export async function GET(req: Request) {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
 
-      // Verificar se as datas são válidas
       if (isNaN(dateA.getTime())) {
         console.error("Data inválida em a.date:", a.date);
       }
@@ -68,11 +67,8 @@ export async function GET(req: Request) {
         console.error("Data inválida em b.date:", b.date);
       }
 
-      // Ordenar diretamente pelas datas, levando em consideração a ordem cronológica
       return dateA.getTime() - dateB.getTime();
     });
-
-    console.log("Eventos ordenados:", sortedEvents);
 
     return NextResponse.json({ events: sortedEvents }, { status: 200 });
   } catch (error) {

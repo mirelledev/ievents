@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   // eslint-disable-next-line
@@ -13,6 +15,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,11 +25,30 @@ export default function LoginPage() {
   }, [status, router]);
 
   if (status === "loading") {
-    return <p>Carregando..</p>;
+    return (
+      <div className="items-center justify-center">
+        <div className="flex flex-col mt-[400px]">
+          <Loader2 className="animate-spin" />
+        </div>
+      </div>
+    );
   }
 
   const handleSubmit = async (e: FormEvent) => {
+    setLoading(true);
     e.preventDefault();
+
+    if (email === "" || password === "") {
+      setError("Preencha todos os campos para fazer login.");
+      setLoading(false);
+      return;
+    }
+
+    if (!email.includes("@")) {
+      setError("Digite um e-mail válido.");
+      setLoading(false);
+      return;
+    }
 
     const result = await signIn("credentials", {
       redirect: false,
@@ -35,10 +57,13 @@ export default function LoginPage() {
     });
 
     if (result?.error) {
-      setError("credenciais erradas");
+      setLoading(false);
+      setError("Credenciais Erradas.");
     } else {
       router.push("/portal");
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -51,7 +76,7 @@ export default function LoginPage() {
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <input
           className=" bg-neutral-800  border-2 mt-2 mb-2 w-[300px] p-3 rounded-md focus:outline-none"
-          type="text"
+          type="email"
           placeholder="E-mail"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setEmail(e.target.value)
@@ -67,14 +92,21 @@ export default function LoginPage() {
           }
           value={password}
         />
-        <button
-          className="p-3 mb-2 border-2 mt-5 bg-white text-black rounded-xl hover:scale-105 transition-transform duration-200"
-          type="submit"
-        >
-          Entrar
-        </button>
+        {loading ? (
+          <Button disabled>
+            <Loader2 className="animate-spin" />
+            Aguarde..
+          </Button>
+        ) : (
+          <Button
+            className="p-3 mb-2 border-2 mt-5 bg-white hover:text-white text-black rounded-xl hover:scale-105 transition-transform duration-200"
+            type="submit"
+          >
+            Entrar
+          </Button>
+        )}
       </form>
-      {error && <p className="text-red-700 mt-2 mb-2 font-bold">{error}</p>}
+      {error && <p className="text-red-500 mt-2 mb-2 font-bold">{error}</p>}
       <p>
         Ainda nao possui uma conta?{" "}
         <Link href="/register">

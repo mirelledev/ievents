@@ -26,6 +26,7 @@ import { useSession } from "next-auth/react";
 import { useEventStore } from "@/store/useEventStore";
 import { useEffect } from "react";
 import { pt } from "date-fns/locale";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   isOpen: boolean;
@@ -47,6 +48,7 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
   const [CEP, setCEP] = useState<string>("");
   const [rua, setRua] = useState<string>("");
   const [numero, setNumero] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const editEvent = useEventStore((state) => state.updateEvent);
 
@@ -138,33 +140,40 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
     if (title.length < 3) {
       setError("O título precisa ter pelo menos 3 caracteres");
+      setLoading(false);
       return;
     }
 
     if (title.length >= 30) {
       setError("O título só pode ser ate 30 caracteres");
+      setLoading(false);
       return;
     }
 
     if (numero.length >= 6) {
       setError("O numero do local so pode ter ate 5 caracteres");
+      setLoading(false);
       return;
     }
     if (description == "" || time == "" || rua == "" || CEP == "") {
       setError("Todos os campos devem ser preenchidos");
+      setLoading(false);
       return;
     }
 
     if (description.length > 60) {
       setError("A descricao só pode ser ate 60 caracteres");
+      setLoading(false);
       return;
     }
 
     if (date && isPastDate(date)) {
       setError("A data não pode ser anterior ao dia atual.");
+      setLoading(false);
       return;
     }
 
@@ -196,14 +205,15 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
         const updatedFields = response.data.data;
 
         editEvent(event.id, updatedFields);
-
+        setLoading(false);
         onClose();
       }
     } catch (error) {
       console.log("Erro ao adicionar evento:", error);
-
+      setLoading(false);
       setError("Erro ao adicionar evento, tente novamente.");
     }
+    setLoading(false);
   };
 
   return (
@@ -342,7 +352,14 @@ export default function DialogEdit({ isOpen, onClose, event }: Props) {
             </div>
 
             <DialogFooter>
-              <Button type="submit">Editar Evento</Button>
+              {loading ? (
+                <Button disabled>
+                  <Loader2 className="animate-spin" />
+                  Editando Evento...
+                </Button>
+              ) : (
+                <Button type="submit">Editar Evento</Button>
+              )}
               <Button onClick={onClose} variant="outline">
                 Sair
               </Button>

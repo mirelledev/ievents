@@ -34,6 +34,13 @@ const sendEmail = async (to: string, subject: string, text: string) => {
 };
 // eslint-disable-next-line
 export async function GET(req: Request) {
+  const authHeader = req.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
+
   try {
     const now = new Date();
     console.log(now);
