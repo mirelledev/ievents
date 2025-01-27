@@ -10,8 +10,8 @@
 - **📅 Criação e gerenciamento de eventos**  
   Cadastre, edite e visualize seus eventos em uma interface simples e intuitiva.  
 
-- **✉️ Envio de convites por e-mail**  
-  Envie convites diretamente pela plataforma de forma rápida e prática.  
+- **✉️ Envio de lembretes por e-mail**  
+  Notifique seus convidados com lembretes automáticos quando o evento estiver se aproximando.  
 
 - **📲 Compartilhamento no WhatsApp**  
   Divulgue seus eventos no WhatsApp com apenas um clique.  
