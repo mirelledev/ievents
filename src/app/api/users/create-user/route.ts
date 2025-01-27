@@ -2,12 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { SignJWT } from "jose";
 import { NextResponse } from "next/server";
-import { RateLimiterMemory } from "rate-limiter-flexible";
-
-const rateLimiter = new RateLimiterMemory({
-  points: 20,
-  duration: 60,
-});
 
 const prisma = new PrismaClient();
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -23,22 +17,6 @@ export async function POST(req: Request) {
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization"
   );
-
-  const ip =
-    (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() ||
-    "127.0.0.1";
-
-  try {
-    await rateLimiter.consume(ip);
-    // eslint-disable-next-line
-  } catch (rateLimitError) {
-    return NextResponse.json(
-      {
-        message: "Limite de requisições excedido, tente novamente mais tarde.",
-      },
-      { status: 429 }
-    );
-  }
 
   try {
     const body = await req.json();
