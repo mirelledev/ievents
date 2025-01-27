@@ -4,7 +4,8 @@ import { useEventStore } from "@/store/useEventStore";
 import { useState } from "react";
 import DialogEdit from "./EditEventModal";
 import Image from "next/image";
-import { Progress } from "@/components/ui/progress";
+
+import { Loader2 } from "lucide-react";
 
 export default function EventCard({
   event,
@@ -19,7 +20,7 @@ export default function EventCard({
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const apiURL = process.env.API_BASE_URL;
-  const [progressValue, setProgressValue] = useState<number>(0);
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const zapSvg = "https://www.svgrepo.com/show/452133/whatsapp.svg";
@@ -28,27 +29,23 @@ export default function EventCard({
 
   const handleDelete = async (eventId: string) => {
     setLoading(true);
-    setProgressValue(0);
+
     const url = `${apiURL}/api/events/delevent`;
-    setProgressValue(25);
 
     try {
-      setProgressValue(50);
       const response = await axios.delete(url, {
         data: { id: eventId },
         headers: { Authorization: `Bearer ${token}` },
       });
-      setProgressValue(100);
+
       setLoading(false);
       removeEvent(eventId);
       console.log("evento deletado com sucesso:", response.data);
     } catch (error) {
-      setProgressValue(100);
       setLoading(false);
       console.error(error);
     }
 
-    setProgressValue(100);
     setLoading(false);
   };
 
@@ -56,7 +53,11 @@ export default function EventCard({
     <>
       <div className="w-full p-3 h-[270px] bg-neutral-800 border border-neutral-600 rounded-lg">
         {loading ? (
-          <Progress value={progressValue} />
+          <div className="flex items-center justify-center mt-[80px]">
+            <div>
+              <Loader2 className="animate-spin" />
+            </div>
+          </div>
         ) : (
           <div>
             <h1 className="truncate font-bold">{event.title}</h1>
