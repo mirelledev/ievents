@@ -10,8 +10,8 @@
 - **📅 Criação e gerenciamento de eventos**  
   Cadastre, edite e visualize seus eventos em uma interface simples e intuitiva.  
 
-- **✉️ Envio de lembretes por e-mail**  
-  Notifique seus convidados com lembretes automáticos quando o evento estiver se aproximando.  
+- **✉️ Lembretes por e-mail**  
+  Receba notificações automáticas quando seus eventos estiverem se aproximando, para que você nunca perca nenhuma data importante.
 
 - **📲 Compartilhamento no WhatsApp**  
   Divulgue seus eventos no WhatsApp com apenas um clique.  
