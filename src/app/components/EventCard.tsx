@@ -4,6 +4,8 @@ import { useEventStore } from "@/store/useEventStore";
 import { useState } from "react";
 import DialogEdit from "./EditEventModal";
 import Image from "next/image";
+import trashbin from "../../assets/trashbin.svg";
+import settings from "../../assets/settings.svg";
 
 import { Loader2 } from "lucide-react";
 
@@ -84,18 +86,22 @@ export default function EventCard({
             </div>
 
             <div className="flex mt-2 flex-row items-center justify-center gap-4">
-              <button
+              <Image
+                width={30}
+                height={30}
+                src={settings}
+                alt="edit event"
                 onClick={openModal}
-                className="bg-neutral-500 p-1 rounded-full size-10 hover:scale-105 transition-transform duration-200"
-              >
-                ⚙
-              </button>
-              <button
+                className="bg-neutral-500 p-2 rounded-full cursor-pointer size-10 hover:scale-105 transition-transform duration-200"
+              />
+              <Image
+                width={38}
+                height={30}
+                alt="delete event"
+                src={trashbin}
                 onClick={() => handleDelete(event.id)}
-                className="bg-red-500 p-1 rounded-full size-10 hover:scale-105 transition-transform duration-200"
-              >
-                🗑
-              </button>
+                className="bg-red-500 cursor-pointer p-1 rounded-full size-10 hover:scale-105 transition-transform duration-200"
+              />
 
               <Image
                 width={100}
